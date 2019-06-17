@@ -1,0 +1,2243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>RDB5</title>
+  <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="black" name="apple-mobile-web-app-status-bar-style">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="css/camtoh5ds.css" />
+  <link rel="stylesheet" href="css/cssB.css" />
+  	<link rel="stylesheet" href="css/loading.css" />
+  <script src="js/vue.js"></script>
+  <script src="js/libs/Tween.min.js"></script>
+  <script src="build/three.js"></script>
+  <script src="js/jquery-1.8.2.min.js"></script>
+  <script src="js/controls/OrbitControls.js"></script>
+  <script src="js/loaders/GLTFLoader.js"></script>
+  <script src="js/WebGL.js"></script>
+  <script src="js/libs/stats.min.js"></script>
+  <script src="js/dat.gui.min.js"></script>
+  <script src="js/Detector.js"></script>
+  <script src="js/inflate.min.js"></script>
+  <script>
+    $('#loading').ready(function() {
+     //  $('#loading .loading-end').animate({
+     //   height: "315px",
+     //    top: 0
+     // },3000,function () {
+     //    $('#loading').hide();
+     //  })
+     // $('#loading .loading-end').animate({
+     //   height: "315px",
+     //    top: 0
+     // },3000)
+    });
+   $(document).ready(function(){
+     // var loadInterval = setInterval(function(){
+     //     if($('.loading-end').css('top') == '0px'){
+     //       console.log('加载完毕');
+     //       $('#loading').fadeOut(2000);
+     //      clearInterval(loadInterval);
+     //     }
+     //   },100);
+       var loadInterval = setInterval(function(){
+       if(scene.children.length==9){
+           $('#loading').fadeOut(2000);
+           clearInterval(loadInterval);
+       }
+       },100);
+   });
+  </script>
+</head>
+<style>
+  * {
+    touch-action: none;
+  }
+
+  body {
+    font-family: Monospace;
+    background-color: rgb(227,233,238);
+    color: #fff;
+    margin: 0px;
+    overflow: hidden;
+    position: fixed;
+  }
+
+  #info {
+    color: #fff;
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+    z-index: 100;
+    display: block;
+  }
+
+  #info a {
+    color: #75ddc1;
+    font-weight: bold;
+  }
+
+  .image_top {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 15px;
+    transform: translateX(-50%);
+  }
+
+
+
+</style>
+
+	<style type="text/css">
+.tp1{ position: absolute; width: 400px; height: 213px; overflow: hidden; left:0;transition: all 0.8s;  text-indent: 0;  transform: translate(-100%,-47%);z-index: 999999;pointer-events: none;}
+.tp2{ width: 100%; transition: all 0.5s ease-out; margin-left: 100%;}
+.close-button {
+    width: 37px;
+    height: 37px;
+    background: url("./img/close.png") no-repeat center;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+		pointer-events: auto;
+}
+.mobile-close-button {
+    width: 37px;
+    height: 37px;
+    background: url("./img/close.png") no-repeat center;
+    position: absolute;
+    right: 1px;
+    top: 2px;
+}
+@media screen and ( max-width: 480px){
+    .tp1,.tp2 {display: none;}
+}
+
+#tp3{ position: absolute; width: 400px; height: 213px; overflow: hidden; left:0;transition: all 0.8s;  text-indent: 0;  transform: translate(-100%,-47%);z-index: 999999;}
+#tp4{ transition: all 0.5s ease-out; margin-left: 100%;}
+
+
+
+.self-a77 {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 9999997;
+    background: url("./img/background.png") no-repeat center;
+    background-size: cover;
+}
+.code-content {
+    margin: auto;
+    max-width: 1024px;
+    position: relative;
+    height: 40%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    top: 35%;
+}
+.code-content .logo-wrap {
+    width: 50%;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+.code-content .logo-wrap img {
+    width: 100%;
+}
+.code-content .qr-wrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 90%;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 41%;
+}
+.code-content .qr-left {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 2.5%;
+}
+.code-content .qr-left img {
+    width: 100%;
+}
+</style>
+	<style>
+		/* #loading .loading-end{ top:260px; } */
+	</style>
+<body>
+<div id="loading">
+    <div class="loading-logo"></div>
+    <div class="loading-box">
+        <div class="loading-start"></div>
+        <div class="loading-end"></div>
+    </div>
+
+</div>
+
+
+
+<div class="self-a77 a77" style="display: none;">
+    <div class="code-content">
+        <div class="logo-wrap">
+            <img src="img/logol.png">
+        </div>
+        <div class="qr-wrap">
+            <div class="qr-left">
+                <img src="img/wechat.png">
+            </div>
+            <div class="qr-left">
+                <img src="img/website.png">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="first">
+        <div class="wer a1" style="display: none; background-image: none">
+            <div class="tp1 tp1-0">
+                <div class="tp2 tp2-0" style="position: relative">
+                    <div class="close-button"></div>
+                    <img src="images/a.png" />
+                </div>
+            </div>
+            <div class="self-dian layer-button-image" data-index="0" style="text-indent: 0px">
+                <img src="img/dianaa.png" onClick="_czc.push(['_trackEvent', '中间热点', 'Aa']);"/>
+            </div>
+            <div class="self-box">
+                <div class="self-right self-right-0" style="text-indent: 0px">
+                    <span style="position: absolute; left: 0; top: 20%; text-indent: 10px;color:#147a7a">隔离控制</span>
+                    <img src="img/kuangaa.png">
+                </div>
+            </div>
+        </div>
+
+        <div class="wer a2" style="display: none; background-image: none">
+            <div class="tp1 tp1-1">
+                <div class="tp2 tp2-1" style="position: relative">
+                    <div class="close-button"></div>
+                    <img src="images/b.png"/>
+                </div>
+            </div>
+            <div class="self-dian layer-button-image" data-index="1" style="text-indent: 0px">
+                <img src="img/dianaa.png" onClick="_czc.push(['_trackEvent', '中间热点', 'Bb']);"/>
+            </div>
+            <div class="self-box">
+                <div class="self-right self-right-1" style="text-indent: 0px">
+                    <span style="position: absolute; left: 0; top: 20%; text-indent: 10px;color:#147a7a">短路保护</span>
+                    <img src="img/kuangaa.png">
+                </div>
+            </div>
+        </div>
+
+        <div class="wer a3" style="display: none; background-image: none">
+            <div class="tp1 tp1-2">
+                <div class="tp2 tp2-2" style="position: relative">
+                    <div class="close-button"></div>
+                    <img src="images/d.png"/>
+                </div>
+            </div>
+            <div class="self-dian layer-button-image" data-index="2" style="text-indent: 0px">
+                <img src="img/dianaa.png" onClick="_czc.push(['_trackEvent', '中间热点', 'Cc']);"/>
+            </div>
+            <div class="self-box">
+                <div class="self-right self-right-2" style="text-indent: 0px">
+                    <span style="position: absolute; left: 0; top: 20%; text-indent: 10px;color:#147a7a">漏电保护</span>
+                    <img src="img/kuangaa.png">
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="wer a4" style="display: none; background-image: none">
+            <div class="tp1 tp1-3">
+                <div class="tp2 tp2-3" style="position: relative">
+                    <div class="close-button"></div>
+                    <img src="images/c.png"/>
+                </div>
+            </div>
+            <div class="self-dian layer-button-image" data-index="3" style="text-indent: 0px">
+                <img src="img/dianaa.png" onClick="_czc.push(['_trackEvent', '中间热点', 'Bb']);"/>
+            </div>
+            <div class="self-box">
+                <div class="self-right self-right-3" style="text-indent: 0px">
+                    <span style="position: absolute; left: 0; top: 20%; text-indent: 10px;color:#147a7a">基 座</span>
+                    <img src="img/kuangaa.png" >
+                </div>
+            </div>
+        </div>
+
+        <div class="wer a5" style="display: none; background-image: none">
+            <div class="tp1 tp1-4">
+                <div class="tp2 tp2-4" style="position: relative">
+                    <div class="close-button"></div>
+                    <img src="images/e.png"/>
+                </div>
+            </div>
+            <div class="self-dian layer-button-image" data-index="4" style="text-indent: 0px">
+                <img src="img/dianaa.png" onClick="_czc.push(['_trackEvent', '中间热点', 'Bb']);"/>
+            </div>
+            <div class="self-box">
+                <div class="self-right self-right-4" style="text-indent: 0px">
+                    <span style="position: absolute; left: 0; top: 20%; text-indent: 10px;color:#147a7a">灭弧装置</span>
+                    <img src="img/kuangaa.png" >
+                </div>
+            </div>
+        </div>
+
+        <div class="wer a6" style="display: none; background-image: none">
+            <div class="tp1 tp1-5">
+                <div class="tp2 tp2-5" style="position: relative">
+                    <div class="close-button"></div>
+                    <img src="images/ziyuan.jpg" />
+                </div>
+            </div>
+            <div class="self-dian layer-button-image" data-index="5" style="text-indent: 0px">
+                <img src="img/dianaa.png" onClick="_czc.push(['_trackEvent', '中间热点', 'Cc']);"/>
+            </div>
+            <div class="self-box">
+                <div class="self-right self-right-5" style="text-indent: 0px">
+                    <span style="position: absolute; left: 0; top: 20%; text-indent: 10px;color:#147a7a">手柄套</span>
+                    <img src="img/kuangaa.png">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="wer a7" style="display: none; background-image: none">
+            <div class="tp1 tp1-6">
+                <div class="tp2 tp2-6" style="position: relative">
+                    <div class="close-button"></div>
+                    <img src="images/d.png"/>
+                </div>
+            </div>
+            <div class="self-dian layer-button-image" data-index="6" style="text-indent: 0px">
+                <img src="img/dianaa.png" onClick="_czc.push(['_trackEvent', '中间热点', 'Cc']);"/>
+            </div>
+            <div class="self-box">
+                <div class="self-right self-right-6" style="text-indent: 0px">
+                    <span style="position: absolute; left: 0; top: 20%; text-indent: 10px;color:#147a7a">电磁系统</span>
+                    <img src="img/kuangaa.png">
+                </div>
+            </div>
+        </div>
+
+        <div class="wer a8" style="display: none; background-image: none">
+            <div class="tp1 tp1-7">
+                <div class="tp2 tp2-7" style="position: relative">
+                    <div class="close-button"></div>
+                    <img src="images/c.png"/>
+                </div>
+            </div>
+            <div class="self-dian layer-button-image" data-index="7" style="text-indent: 0px">
+                <img src="img/dianaa.png" onClick="_czc.push(['_trackEvent', '中间热点', 'Bb']);"/>
+            </div>
+            <div class="self-box">
+                <div class="self-right self-right-7" style="text-indent: 0px">
+                    <span style="position: absolute; left: 0; top: 20%; text-indent: 10px;color:#147a7a">手 柄</span>
+                    <img src="img/kuangaa.png" >
+                </div>
+            </div>
+        </div>
+
+        <div class="wer a9" style="display: none; background-image: none">
+            <div class="tp1 tp1-8">
+                <div class="tp2 tp2-8" style="position: relative">
+                    <div class="close-button"></div>
+                    <img src="images/e.png"/>
+                </div>
+            </div>
+            <div class="self-dian layer-button-image" data-index="8" style="text-indent: 0px">
+                <img src="img/dianaa.png" onClick="_czc.push(['_trackEvent', '中间热点', 'Bb']);"/>
+            </div>
+            <div class="self-box">
+                <div class="self-right self-right-8" style="text-indent: 0px">
+                    <span style="position: absolute; left: 0; top: 20%; text-indent: 10px;color:#147a7a">操作机构</span>
+                    <img src="img/kuangaa.png" >
+                </div>
+            </div>
+        </div>
+
+        <div class="wer a10" style="display: none; background-image: none">
+            <div class="tp1 tp1-9">
+                <div class="tp2 tp2-9" style="position: relative">
+                    <div class="close-button"></div>
+                    <img src="images/ziyuan.jpg" />
+                </div>
+            </div>
+            <div class="self-dian layer-button-image" data-index="9" style="text-indent: 0px">
+                <img src="img/dianaa.png" onClick="_czc.push(['_trackEvent', '中间热点', 'Cc']);"/>
+            </div>
+            <div class="self-box">
+                <div class="self-right self-right-9" style="text-indent: 0px">
+                    <span style="position: absolute; left: 0; top: 20%; text-indent: 10px;color:#147a7a">盖 子</span>
+                    <img src="img/kuangaa.png">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+  <!-- <div class="wer four"><p id = 'xq4' onclick="Show_Hidden(xq4)">重置<p></div> -->
+  <div class='twk' id='xq1' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/cca.gif'><img onclick="Show_Hidden(xq1)" class='close' id ='closetab'  src='img/close.png'> -->
+  </div>
+  <div class='twk' id='xq2' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/AA.gif'><img onclick="Show_Hidden(xq2)" class='close' id ='closetab' src='img/close.png'> -->
+  </div>
+  <div class='twk' id='xq3' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/BB.gif'><img onclick="Show_Hidden(xq3)" class='close' id ='closetab' src='img/close.png'> -->
+  </div>
+  <div class='twk' id='xq4' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/BB.gif'><img onclick="Show_Hidden(xq3)" class='close' id ='closetab' src='img/close.png'> -->
+  </div>
+  <div class='twk' id='xq5' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/BB.gif'><img onclick="Show_Hidden(xq3)" class='close' id ='closetab' src='img/close.png'> -->
+  </div>
+    <div class='twk' id='xq6' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/BB.gif'><img onclick="Show_Hidden(xq3)" class='close' id ='closetab' src='img/close.png'> -->
+  </div>
+    <div class='twk' id='xq7' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/BB.gif'><img onclick="Show_Hidden(xq3)" class='close' id ='closetab' src='img/close.png'> -->
+  </div>
+  <div class='twk' id='xq8' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/BB.gif'><img onclick="Show_Hidden(xq3)" class='close' id ='closetab' src='img/close.png'> -->
+  </div>
+  <div class='twk' id='xq9' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/BB.gif'><img onclick="Show_Hidden(xq3)" class='close' id ='closetab' src='img/close.png'> -->
+  </div>
+    <div class='twk' id='xq10' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/BB.gif'><img onclick="Show_Hidden(xq3)" class='close' id ='closetab' src='img/close.png'> -->
+  </div>
+
+
+  <div class='twk' id='xqa1' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/AA.gif'><img onclick="Show_Hidden(xqa1)" class='close' id='closetab' -->
+      <!-- src='img/close.png'> -->
+  </div>
+  <div class='twk' id='xqa2' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/BB.gif'><img onclick="Show_Hidden(xqa2)" class='close' id='closetab' -->
+      <!-- src='img/close.png'> -->
+  </div>
+  <div class='twk' id='xqa3' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/cca.gif'><img onclick="Show_Hidden(xqa3)" class='close' id='closetab' -->
+      <!-- src='img/close.png'> -->
+  </div>
+    <div class='twk' id='xqa4' style='display:none'>
+    <!-- <img class='tw' src='http://pori6ayzy.bkt.clouddn.com/ye/cca.gif'><img onclick="Show_Hidden(xqa3)" class='close' id='closetab' -->
+      <!-- src='img/close.png'> -->
+  </div>
+  <!-- <div class="image_background"> -->
+  <!-- <div class="image_top"> -->
+  <!-- <img src="files/img_top.png"> -->
+  <!-- </div> -->
+  <!-- <div class="image_bottom"> -->
+  <!-- <img src="files/360_image.png"> -->
+  <!-- </div> -->
+  <div class="image_background">
+    <!-- <div class="image_top"> -->
+    <!-- <img src="files/img_topa.png"> -->
+    <!-- </div> -->
+    <!-- <div class="image_bottom"> -->
+
+    <!-- <img src="files/360_imagea.png"> -->
+
+    <!-- </div> -->
+
+    <!-- xq()控制摄影机运动和热点的隐藏、显示 -->
+
+    <!-- 底部轮播按钮的触发 -->
+  </div>
+  <div class="image_top" id="image_top"></div>
+  <div class="xan" :style="'background-image:url(files/bg'+selectindex+'.png)'" id="app">
+  </div>
+    <!-- <div v-if="selectindex==1" class="active"> -->
+      <!-- <span v-for="(item,index) in list1" :onmousedown="'Anclick(\''+selectindex+'-'+(index+1)+'\')'" class="active"> -->
+        <!-- <img :src="item" width="50" algin="center" /></span> -->
+    <!-- </div> -->
+
+    <!-- <div v-if="selectindex==2" class="active"> -->
+      <!-- <span v-for="(item,index) in list2" :onmousedown="'Anclick(\''+selectindex+'-'+(index+1)+'\')'" class="active"> -->
+        <!-- <img :src="item" width="50" algin="center" /></span> -->
+    <!-- </div> -->
+
+    <!-- <div v-if="selectindex==3" class="active"> -->
+      <!-- <span v-for="(item,index) in list3" :onmousedown="'Anclick(\''+selectindex+'-'+(index+1)+'\')'" class="active"> -->
+        <!-- <img :src="item" width="50" algin="center" /></span> -->
+    <!-- </div> -->
+
+    <!-- <div v-if="selectindex==4" class="active"> -->
+      <!-- <span v-for="(item,index) in list4" :onmousedown="'Anclick(\''+selectindex+'-'+(index+1)+'\')'" class="active"> -->
+        <!-- <img :src="item" width="50" algin="center" /></span> -->
+    <!-- </div> -->
+
+    <!-- <div v-if="selectindex==5" class="active"> -->
+      <!-- <span v-for="(item,index) in list5" :onmousedown="'Anclick(\''+selectindex+'-'+(index+1)+'\')'" class="active"> -->
+        <!-- <img :src="item" width="50" algin="center" /></span> -->
+    <!-- </div> -->
+
+
+  <!-- 下侧按钮 -->
+    <div class="layer-right " >
+        <div class="layer-button" onClick="qiea();_czc.push(['_trackEvent', '右侧', '功能1']);"></div>
+
+    </div>
+	    <div class="layer-righta " >
+        <div class="layer-button" onClick="qieb();_czc.push(['_trackEvent', '右侧', '功能1']);"></div>
+
+    </div>
+	    <div class="layer-rightb " >
+        <div class="layer-button" onClick="qiec();_czc.push(['_trackEvent', '右侧', '功能1']);"></div>
+
+    </div>
+	    <div class="layer-rightc " >
+        <div class="layer-button" onClick="qied();_czc.push(['_trackEvent', '右侧', '功能1']);"></div>
+
+    </div>
+
+
+
+
+  <div class="image_bottom">
+    <div class="btn_box pages">
+      <div class="shang"></div>
+      <span class="active  tips" onclick="Show_Hidden(xq1),donghua1();vm.selectindex=1;"></span>
+      <span class="tips" onclick="Show_Hidden(xq2),donghua2();vm.selectindex=2;"></span>
+      <span class="tips" onclick="Show_Hidden(xq3),donghua3();vm.selectindex=3;"></span>
+      <span class="tips" onclick="Show_Hidden(xq4),donghua4();vm.selectindex=4;"></span>
+      <span class="tips" onclick="Show_Hidden(xq5),donghua5();vm.selectindex=5;"></span>
+	  <span class="tips" onclick="Show_Hidden(xq6),donghua6();vm.selectindex=6;"></span>
+      <div class="xia"></div>
+    </div>
+  </div>
+
+
+
+  <!-- <script type="text/javascript"> -->
+                        <!-- var mobileSrcMap = { -->
+              <!-- '.first': ["images/a.png","images/b.png","images/d.png","images/c.png","images/e.png","img/ac.png"], -->
+              <!-- '.second': ["images/a.png","images/b.png","images/c.png"], -->
+            <!-- } -->
+<!-- function selfButton(ele) { -->
+              <!-- ele.find(".self-dian").click(function(){ -->
+                <!-- var self = $(this); -->
+                <!-- var index = $(this).attr("data-index"); -->
+                <!-- if(document.body.clientWidth <= 768) { -->
+                  <!-- var imageSrc = mobileSrcMap [ele.selector]; -->
+                  <!-- console.log(imageSrc,index) -->
+                  <!-- $('#mobile_image').show(); -->
+                  <!-- $('#mobile_image').find('#mobile_img').attr('src',imageSrc[+index]); -->
+                <!-- } else { -->
+                  <!-- var tp2Class = ".tp2-" +index, -->
+                    <!-- selfRightClass = ".self-right-" + index, -->
+                    <!-- tp1Class = ".tp1-" + index; -->
+                  <!-- ele.find(`.tp2:not(${tp2Class})`).css("margin-left","400px"); -->
+                  <!-- ele.find(`.self-right:not(${selfRightClass})`).animate({"margin-left":"0px"}); -->
+                  <!-- setTimeout(function(){ -->
+                    <!-- ele.find(`.tp1:not(${tp1Class})`).hide(); -->
+                    <!-- var parent = self.closest('.wer'); -->
+                    <!-- if(parent.find('.tp2').css('margin-left') === "400px"){ -->
+                      <!-- parent.find('.tp1').show(); -->
+                      <!-- setTimeout(function(){ -->
+                        <!-- parent.find('.self-right').animate({"margin-left": (index === "1" ? "300px" : "-300px")},function() { -->
+                          <!-- parent.find('.tp2').css("margin-left","0px"); -->
+                        <!-- }); -->
+                      <!-- },50) -->
+                    <!-- }else{ -->
+                      <!-- parent.find('.self-right').animate({"margin-left":"0px"}, function() { -->
+                        <!-- parent.find('.tp2').css("margin-left","400px"); -->
+                      <!-- }); -->
+                      <!-- setTimeout(function(){ -->
+                        <!-- parent.find(".tp1").hide(); -->
+                      <!-- },550) -->
+                    <!-- } -->
+                  <!-- },550) -->
+                <!-- } -->
+              <!-- }) -->
+              <!-- ele.find('.close-button').click(function() { -->
+                <!-- var parent = $(this).closest('.wer'); -->
+                <!-- parent.find('.self-right').animate({"margin-left":"0px"}, function() { -->
+                  <!-- parent.find('.tp2').css("margin-left","400px"); -->
+                <!-- }); -->
+                <!-- setTimeout(function(){ -->
+                  <!-- parent.find(".tp1").hide(); -->
+                <!-- },550) -->
+              <!-- }); -->
+            <!-- } -->
+			<!-- $('.mobile-close-button').click(function () { -->
+              <!-- $('#mobile_image').hide(); -->
+            <!-- }) -->
+
+
+			<!-- $(".a2,.a4").click(function(){ -->
+				<!-- isx=0; -->
+				<!-- $("#tp2").css("margin-left","100%"); -->
+				<!-- setTimeout(function(){ -->
+					<!-- $("#tp1").hide(); -->
+
+				<!-- },550) -->
+			<!-- }) -->
+            <!-- function selfMap(ele) { -->
+			    <!-- var layer_button_image = ele.find('.layer-button-image'); -->
+			    <!-- $(ele.selector + '-layer-button').find('.layer-button').click(function() { -->
+			        <!-- var idx = $(this).index(); -->
+                    <!-- layer_button_image.eq(idx).click(); -->
+                <!-- }) -->
+            <!-- } -->
+            <!-- selfButton($('.first')); -->
+            <!-- selfMap($('.first')); -->
+			            <!-- selfButton($('.second')); -->
+            <!-- selfMap($('.second')); -->
+
+
+        <!-- </script> -->
+  <script>
+
+  <!-- 高亮 -->
+          var layer_button = $('.layer-button');
+
+        layer_button.click(function(){
+            layer_button.removeClass('layer-button-active');
+            $(this).addClass('layer-button-active');
+        })
+  var progress1=0,progress2=0,progress3=0,progress4=0,progress5=0,progress6=0;
+    var isdonghua9 = false;
+	var isdonghua10 = false;
+      var nowtime = 1000;
+	  var nowtimea = 1000;
+        var vm = new Vue({//子系统按钮
+      el: '#app',
+      data: function () {
+        return {
+          selectindex: 1,
+          list1: [
+            'http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png',
+            'http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png'
+          ],
+          list2: [
+            'http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png',
+            'http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png',
+            'http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png',
+            'http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png'
+          ],
+          list3: ['http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png'],
+          list4: [
+            'http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png',
+            'http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png'
+          ],
+          list5: [
+            'http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png',
+            'http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png',
+            'http://pccdn.weshape3d.com/Art/dishwasher/03/biaozhunlei_active.png'
+          ],
+
+        };
+      }
+    });
+
+    function Anclick(clickindex) {
+      //alert(clickindex);子系统按钮动画触发
+      switch (clickindex) {
+        case '1-1':
+          donghua1();
+          break;
+        case '1-2':
+          donghua2();
+          break;
+
+        case '2-1':
+          donghua1();
+          break;
+        case '2-2':
+          donghua2();
+          break;
+        case '2-3':
+          donghua3();
+          break;
+        case '2-4':
+          donghua4();
+          break;
+
+        case '3-1':
+          jieti();
+          break;
+
+        case '4-1':
+          jieti();
+          break;
+        case '4-2':
+          jieti();
+          break;
+
+        case '5-1':
+          donghua5();
+          break;
+        case '5-2':
+          donghua6();
+          break;
+        case '5-3':
+          donghua7();
+          break;
+      }
+    }
+
+    function backToNormalView() {	// 用于点击热点观察细节之后的重置相机的视角；
+
+      controls.enable = false;
+
+      var target = controls.target.clone();
+      new TWEEN.Tween(target).to({
+        x: 0,
+        y: 0,
+        z: 0
+      }, 1000)
+        .onUpdate(function () {
+          camera.lookAt(target);
+          controls.target = target.clone();
+        })
+        .onComplete(function () {
+          controls.target = new THREE.Vec3(-0.00001, 0, 0)
+          controls.enable = true;
+        })
+        .easing((TWEEN.Easing.Quadratic.InOut)).start();
+      // var cameraPosition  = defineCameraPosition(camera,hotspot);
+      new TWEEN.Tween(camera.position).to({
+        z: 0,
+        x: 0,
+        y: 0,
+      }, 2000).onComplete(function () {
+        if (trid.style.display == "block") { 	// 暂时去掉热点点击出现描述页面，改为移动相机到对应的点,
+          trid.style.display = 'none';
+        } else {
+          trid.style.display = 'block';
+          controls.enable = false;
+        }
+      }).easing((TWEEN.Easing.Quadratic.InOut)).start();
+    }
+    function Show_Hidden(trid) {
+      var list = document.getElementsByClassName('twk');
+      for (var i = 0; i < list.length; i++) {
+
+        if (list[i].id != trid.id) {
+          list[i].style.display = "none";
+        }
+      }
+
+      if (trid.style.display == "block") {
+        trid.style.display = 'none';
+
+      } else {
+        trid.style.display = 'block';
+      }
+      movingState = !movingState;
+      if (!movingState) {
+        return;
+      }
+      console.log(trid.id);
+      switch (trid.id) {
+        case ('xq1'):
+          // 相机开始移动到对应的位置；
+          tweenCameraWithHotspot(targetArray[1], trid, cameraPositionArray[0].position);
+          break;
+        case ('xq3'):
+		console.log('enter');
+          // 相机开始移动到对应的位置；
+          tweenCameraWithHotspot(targetArray[1], trid, cameraPositionArray[1].position);
+          break;
+        case ('xq4'):
+          // 相机开始移动到对应的位置；
+          tweenCameraWithHotspot(targetArray[1], trid, cameraPositionArray[2].position);
+          break;
+        case ('xq5'):
+          // 相机开始移动到对应的位置；
+          tweenCameraWithHotspot(targetArray[1], trid, cameraPositionArray[3].position);
+          break;
+        case ('xq6'):
+          // 相机开始移动到对应的位置；
+          tweenCameraWithHotspot(targetArray[1], trid, cameraPositionArray[4].position);
+          break;
+		          case ('xq2'):
+          // 相机开始移动到对应的位置；
+          tweenCameraWithHotspot(targetArray[1], trid, cameraPositionArray[5].position);
+          break;
+
+        default: break;
+      }
+    }
+
+
+
+
+    if (WEBGL.isWebGLAvailable() === false) {
+      document.body.appendChild(WEBGL.getWebGLErrorMessage());
+    }
+
+    var container, mixer, controls;
+    var camera, scene, renderer, light, scenea;
+    var group = new THREE.Object3D();
+    var startMove = false;
+    var times = 0;
+    var rotationDirection = -1;
+    var opacity = 0.002;
+    var clock = new THREE.Clock();
+    var animUp = false; // 0-up 1-down
+    var currentAction = null;
+    var Uvoffset = 0.03;
+    var renderer, gui, light, stats;
+    var cube, cube2, cube3, cube4, cube5, cube6, cube7, cube8, cube9, cube10, cubea1, cubea2, cubea3;
+
+    var showanimation = [];
+    var shoeModel;
+    var opcityDir = -1;
+    var cameraStartToMove = false;
+    var array_count = 0;
+
+    var camPositions = [];
+    var ctlTargets = [];
+    var currentIndex = -1;
+    var intvTime = 2000;
+    var targetArray = [{ name: 'reset', position: new THREE.Vector3(0, 0, 0) }];
+    var cameraPositionArray = [{ position: new THREE.Vector3(5, 7, 25) }, { position: new THREE.Vector3(-11, 13, 25) }, { position: new THREE.Vector3(12, 4, 28) }, { position: new THREE.Vector3(-22, 15, 28) }, { position: new THREE.Vector3(5, 7, 25) }, { position: new THREE.Vector3(5, 7, 25) }];
+    var movingState = false;
+    var Qa,Qb,Qc,Qd,Qshadow;
+    var timer = Date.now() * 3;
+
+
+    init();
+    animate();
+
+
+    function initRender() {                 //渲染方式
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true
+      });
+
+      renderer.shadowMap.enabled = true;
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      //renderer.setClearColor(0xd7d7d7);
+      document.getElementById("container").appendChild(renderer.domElement);
+
+    }
+
+
+    function defineCameraPosition(camera, hotspot) {
+      var count = 1;
+      var cameraPosition = camera.position.clone();
+      var hotspotPosition = hotspot.position.clone();
+      var positionNormalize = cameraPosition.subVectors(cameraPosition, hotspotPosition).normalize();
+      return new THREE.Vector3(cameraPosition.x + count * positionNormalize.x, cameraPosition.y + count * positionNormalize.y, cameraPosition.z + count * positionNormalize.z);
+    }
+
+    function tweenCamera(index) {
+      controls.enable = false;
+      var target = controls.target.clone();
+      new TWEEN.Tween(target).to({
+        x: ctlTargets[index].x,
+        y: ctlTargets[index].y,
+        z: ctlTargets[index].z
+      }, nowtime)
+        .onUpdate(function () {
+          camera.lookAt(target);
+          controls.target = target.clone();
+        })
+        .onComplete(function () {
+          controls.target = ctlTargets[index].clone();
+          controls.enable = true;
+        })
+        .easing(TWEEN.Easing.Linear.None).start();
+
+      new TWEEN.Tween(camera.position).to({
+        x: camPositions[index].x,
+        y: camPositions[index].y,
+        z: camPositions[index].z
+      }, nowtime)
+        .easing(TWEEN.Easing.Linear.None).start();
+    }
+    function tweenCameraWithHotspot(hotspot, trid, cameraPosition) {
+      var hotspotPosition = hotspot.position;
+      controls.enable = false;
+      var target = controls.target.clone();
+      new TWEEN.Tween(target).to({
+        x: hotspotPosition.x,
+        y: hotspotPosition.y,
+        z: hotspotPosition.z
+      }, 1000)
+        .onUpdate(function () {
+          camera.lookAt(target);
+          controls.target = target.clone();
+        })
+        .onComplete(function () {
+          controls.target = hotspotPosition.clone();
+          controls.enable = true;
+        })
+        .easing((TWEEN.Easing.Quadratic.InOut)).start();
+      // var cameraPosition  = defineCameraPosition(camera,hotspot);
+      new TWEEN.Tween(camera.position).to({
+        z: cameraPosition.z,
+        x: cameraPosition.x,
+        y: cameraPosition.y,
+      }, nowtime).onComplete(function () {
+        movingState = false;
+        if (trid.style.display == "block" && trid.id != 'xq4') { 	// 暂时去掉热点点击出现描述页面，改为移动相机到对应的点,
+          trid.style.display = 'none';
+        } else {
+          trid.style.display = 'block';
+          controls.enable = false;
+        }
+      }).easing((TWEEN.Easing.Quadratic.InOut)).start();
+
+    }
+    // 改造了下这个方法
+    function cameraMoveState() {
+      moveDirection = 1;
+      if (array_count < 4) {
+        array_count++;
+      } else {
+        array_count = 0;
+      }
+
+      if (camPositions.length > array_count) {
+        tweenCamera(array_count);
+      }
+
+      // playTween(array_count);
+      // cameraStartToMove = true;
+    }
+
+    // 改造了下这个方法
+    function cameraMoveBackState() {
+      moveDirection = -1;
+      if (array_count > 0) {
+        array_count--;
+
+      } else {
+        array_count = 4;
+      }
+
+      if (camPositions.length > array_count) {
+        tweenCamera(array_count);
+      }
+
+      // playTween(array_count);
+      // cameraStartToMove = true;
+
+    }
+
+
+      function startTomove() {
+        times++;
+        if (times == 2) {
+          startMove = true;
+          // resetEveryThing();
+          opcityDir = -opcityDir;
+          // 播放下落动画；
+          playDownAnimation();
+          times = 0;
+        } else {
+          startMove = true;
+          opcityDir = -opcityDir;
+        }
+
+      }
+
+    function resetEveryThing() {
+      if (shoeModel) {
+        shoeModel.traverse(function (child) {
+          if (child.type == 'Mesh') {
+            child.material.opacity = 1;
+            child.material.transparent = true;
+          }
+
+        })
+      }
+    }
+
+    function playDownAnimation() {
+      if (showanimation[1]) {
+        var action = mixer.clipAction(showanimation[1]);
+        action.loop = THREE.LoopOnce;
+        action.time = 0;
+        action.clampWhenFinished = true;
+        action.enable = true;
+        action.play();
+      }
+    }
+    function donghua1() {
+
+
+	  controls.minPolarAngle = Math.PI / 2;
+      controls.maxPolarAngle = Math.PI / 2;       // 控制酒瓶的旋转角度
+	  controls.maxAzimuthAngle = 1;		//水平角度最右限制
+	  controls.minAzimuthAngle = -1;       //水平角度最左限制
+      controls.minDistance = 25;
+      controls.maxDistance = 25;
+
+	  Qa.visible = false;
+	  Qb.visible = false;
+	  Qc.visible = false;
+	  Qd.visible = false;
+	  shoeModel.visible = true;
+
+      console.log(shoeModel);
+
+
+      cube4.visible = false;
+      cube5.visible = false;
+      cube6.visible = false;
+	  cube7.visible = false;
+      cube8.visible = false;
+      cube9.visible = false;
+	  cube10.visible = false;
+      cube.visible = false;
+      cube2.visible = false;
+      cube3.visible = false;
+      document.getElementsByClassName('a4')[0].style.display = 'none';
+      document.getElementsByClassName('a5')[0].style.display = 'none';
+      document.getElementsByClassName('a6')[0].style.display = 'none';
+      document.getElementsByClassName('a1')[0].style.display = 'none';
+      document.getElementsByClassName('a2')[0].style.display = 'none';
+      document.getElementsByClassName('a3')[0].style.display = 'none';
+      document.getElementsByClassName('a77')[0].style.display = 'none';
+
+
+	  document.getElementsByClassName('layer-right')[0].style.display = 'block';
+	  document.getElementsByClassName('layer-righta')[0].style.display = 'block';
+      document.getElementsByClassName('layer-rightb')[0].style.display = 'block';
+      document.getElementsByClassName('layer-rightc')[0].style.display = 'block';
+    }
+
+function donghua10(){
+		if (currentAction) {
+        mixer.stopAllAction();
+      }
+      if (showanimation[3]) {
+        currentAction = mixer.clipAction(showanimation[3]);
+        currentAction.loop = THREE.LoopOnce;
+        currentAction.time = 0;
+        currentAction.clampWhenFinished = true;
+        currentAction.enable = true;
+        currentAction.fadeIn();
+        currentAction.play(); //合体
+      }
+
+	  Qa.visible = false;
+	  Qb.visible = false;
+	  Qc.visible = false;
+	  Qd.visible = false;
+	  shoeModel.visible = true;
+
+      console.log(shoeModel);
+
+
+      cube4.visible = false;
+      cube5.visible = false;
+      cube6.visible = false;
+	  cube7.visible = false;
+      cube8.visible = false;
+      cube9.visible = false;
+	  cube10.visible = false;
+      cube.visible = false;
+      cube2.visible = false;
+      cube3.visible = false;
+      document.getElementsByClassName('a4')[0].style.display = 'none';
+      document.getElementsByClassName('a5')[0].style.display = 'none';
+      document.getElementsByClassName('a6')[0].style.display = 'none';
+      document.getElementsByClassName('a1')[0].style.display = 'none';
+      document.getElementsByClassName('a2')[0].style.display = 'none';
+      document.getElementsByClassName('a3')[0].style.display = 'none';
+        document.getElementsByClassName('a77')[0].style.display = 'none';
+
+
+	  <!-- document.getElementsByClassName('layer-right')[0].style.display = 'block'; -->
+	  <!-- document.getElementsByClassName('layer-righta')[0].style.display = 'block'; -->
+      <!-- document.getElementsByClassName('layer-rightb')[0].style.display = 'block'; -->
+      <!-- document.getElementsByClassName('layer-rightc')[0].style.display = 'block'; -->
+}
+
+
+
+    function donghua2() {
+	controls.minPolarAngle = Math.PI / 2 - 1.2;
+      controls.maxPolarAngle = Math.PI / 2 + 1;       // 控制酒瓶的旋转角度
+	  controls.maxAzimuthAngle = 4;		//水平角度最右限制
+	  controls.minAzimuthAngle = -4 ;       //水平角度最左限制
+      controls.minDistance = 8;
+      controls.maxDistance = 55;
+				      if(isdonghua10) {
+	          donghua10();
+	          return;
+          }
+	  Qa.visible = false;
+	  Qb.visible = false;
+	  Qc.visible = false;
+	  Qd.visible = false;
+	  shoeModel.visible = true;
+	  Qshadow.visible = true;
+
+
+
+
+      cube4.visible = true;
+      cube5.visible = true;
+      cube6.visible = true;
+	  cube7.visible = true;
+      cube8.visible = true;
+      cube9.visible = true;
+	  cube10.visible = true;
+      cube.visible = false;
+      cube2.visible = false;
+      cube3.visible = true;
+
+      cubea1.visible = false;
+      cubea2.visible = false;
+      cubea3.visible = false;
+      document.getElementsByClassName('a1')[0].style.display = 'none';
+      document.getElementsByClassName('a2')[0].style.display = 'none';
+      document.getElementsByClassName('a3')[0].style.display = 'none';
+
+        document.getElementsByClassName('a77')[0].style.display = 'none';
+
+        document.getElementsByClassName('layer-right')[0].style.display = 'none';
+	  document.getElementsByClassName('layer-righta')[0].style.display = 'none';
+      document.getElementsByClassName('layer-rightb')[0].style.display = 'none';
+      document.getElementsByClassName('layer-rightc')[0].style.display = 'none';
+    }
+
+
+
+
+
+
+    function donghua3() {
+
+	  controls.minPolarAngle = Math.PI / 2 - 1.2;
+      controls.maxPolarAngle = Math.PI / 2 + 1;       // 控制酒瓶的旋转角度
+	  controls.maxAzimuthAngle = 4;		//水平角度最右限制
+	  controls.minAzimuthAngle = -4 ;       //水平角度最左限制
+      controls.minDistance = 8;
+      controls.maxDistance = 55;
+	  Qa.visible = false;
+	  Qb.visible = false;
+	  Qc.visible = false;
+	  //Qd.visible = false;
+	  shoeModel.visible = true;
+	  Qshadow.visible = true;
+
+
+	        if (currentAction) {
+        mixer.stopAllAction();
+      }
+      if (showanimation[2]) {
+        currentAction = mixer.clipAction(showanimation[2]);
+        currentAction.loop = THREE.LoopOnce;
+        currentAction.time = 0;
+        currentAction.clampWhenFinished = true;
+        currentAction.enable = true;
+        currentAction.fadeIn();
+        currentAction.play(); //合体
+      }
+
+
+
+      cube4.visible = true;
+      cube5.visible = true;
+      cube6.visible = true;
+	  cube7.visible = true;
+      cube8.visible = true;
+      cube9.visible = true;
+	  cube10.visible = true;
+
+      cube.visible = false;
+      cube2.visible = false;
+      cube3.visible = true;
+      <!-- document.getElementsByClassName('a4')[0].style.display = 'block'; -->
+      <!-- document.getElementsByClassName('a5')[0].style.display = 'block'; -->
+      <!-- document.getElementsByClassName('a6')[0].style.display = 'block'; -->
+      <!-- document.getElementsByClassName('a1')[0].style.display = 'none'; -->
+      <!-- document.getElementsByClassName('a2')[0].style.display = 'none'; -->
+      <!-- document.getElementsByClassName('a3')[0].style.display = 'block'; -->
+
+      cubea1.visible = false;
+      cubea2.visible = false;
+      cubea3.visible = false;
+      document.getElementsByClassName('a1')[0].style.display = 'none';
+      document.getElementsByClassName('a2')[0].style.display = 'none';
+      document.getElementsByClassName('a3')[0].style.display = 'none';
+
+        document.getElementsByClassName('a77')[0].style.display = 'none';
+
+        document.getElementsByClassName('layer-right')[0].style.display = 'none';
+	  document.getElementsByClassName('layer-righta')[0].style.display = 'none';
+      document.getElementsByClassName('layer-rightb')[0].style.display = 'none';
+      document.getElementsByClassName('layer-rightc')[0].style.display = 'none';
+    }
+
+
+
+    function donghua4() {
+			        if (currentAction) {
+        mixer.stopAllAction();
+      }
+      if (showanimation[3]) {
+        currentAction = mixer.clipAction(showanimation[3]);
+        currentAction.loop = THREE.LoopOnce;
+        currentAction.time = 0;
+        currentAction.clampWhenFinished = true;
+        currentAction.enable = true;
+        currentAction.fadeIn();
+        currentAction.play(); //合体
+      }
+		      if(isdonghua9) {
+	          donghua9();
+	          return;
+          }
+	Qshadow.visible = false;
+
+      cube4.visible = false;
+      cube5.visible = false;
+      cube6.visible = false;
+	  cube7.visible = false;
+      cube8.visible = false;
+      cube9.visible = false;
+	  cube10.visible = false;
+      cube.visible = false;
+      cube2.visible = false;
+      cube3.visible = false;
+      <!-- document.getElementsByClassName('a4')[0].style.display = 'none'; -->
+      <!-- document.getElementsByClassName('a5')[0].style.display = 'none'; -->
+      <!-- document.getElementsByClassName('a6')[0].style.display = 'none'; -->
+      <!-- document.getElementsByClassName('a1')[0].style.display = 'none'; -->
+      <!-- document.getElementsByClassName('a2')[0].style.display = 'none'; -->
+      <!-- document.getElementsByClassName('a3')[0].style.display = 'none'; -->
+	  document.getElementsByClassName('a77')[0].style.display = 'none';
+
+      cubea1.visible = true;
+      cubea2.visible = true;
+      cubea3.visible = true;
+      document.getElementsByClassName('a1')[0].style.display = 'block';
+      document.getElementsByClassName('a2')[0].style.display = 'block';
+      document.getElementsByClassName('a3')[0].style.display = 'block';
+
+	  	document.getElementsByClassName('a4')[0].style.display = 'none';
+        document.getElementsByClassName('a5')[0].style.display = 'none';
+        document.getElementsByClassName('a6')[0].style.display = 'none';
+		document.getElementsByClassName('a7')[0].style.display = 'none';
+        document.getElementsByClassName('a8')[0].style.display = 'none';
+        document.getElementsByClassName('a9')[0].style.display = 'none';
+        document.getElementsByClassName('a10')[0].style.display = 'none';
+    }
+    function donghua9() {
+	  document.getElementsByClassName('a1')[0].style.display = 'block';
+      document.getElementsByClassName('a2')[0].style.display = 'block';
+      document.getElementsByClassName('a3')[0].style.display = 'block';
+
+	  	 document.getElementsByClassName('a4')[0].style.display = 'none';
+        document.getElementsByClassName('a5')[0].style.display = 'none';
+        document.getElementsByClassName('a6')[0].style.display = 'none';
+		document.getElementsByClassName('a7')[0].style.display = 'none';
+        document.getElementsByClassName('a8')[0].style.display = 'none';
+        document.getElementsByClassName('a9')[0].style.display = 'none';
+        document.getElementsByClassName('a10')[0].style.display = 'none';
+              //动画3
+	        if (currentAction) {
+        mixer.stopAllAction();
+      }
+      if (showanimation[1]) {
+        currentAction = mixer.clipAction(showanimation[1]);
+        currentAction.loop = THREE.LoopOnce;
+        currentAction.time = 0;
+        currentAction.clampWhenFinished = true;
+        currentAction.enable = true;
+        currentAction.fadeIn();
+        currentAction.play(); //合体
+      }
+    }
+
+
+    function donghua5() {
+	Qshadow.visible = true;
+      //动画4
+      if (currentAction) {
+        mixer.stopAllAction();
+      }
+      if (showanimation[0]) {
+        currentAction = mixer.clipAction(showanimation[0]);
+        currentAction.loop = THREE.LoopOnce;
+        currentAction.time = 0;
+        currentAction.clampWhenFinished = true;
+        currentAction.enable = true;
+        currentAction.fadeIn();
+        currentAction.play(); //合体
+      }
+      cubea1.visible = false;
+      cubea2.visible = false;
+      cubea3.visible = false;
+      document.getElementsByClassName('a1')[0].style.display = 'none';
+      document.getElementsByClassName('a2')[0].style.display = 'none';
+      document.getElementsByClassName('a3')[0].style.display = 'none';
+	  document.getElementsByClassName('a77')[0].style.display = 'none';
+
+
+	setTimeout(function() {document.getElementsByClassName('a4')[0].style.display = 'block';},nowtimea)
+    setTimeout(function() {document.getElementsByClassName('a5')[0].style.display = 'block';},nowtimea)
+    setTimeout(function() {document.getElementsByClassName('a6')[0].style.display = 'block';},nowtimea)
+	setTimeout(function() {document.getElementsByClassName('a7')[0].style.display = 'block';},nowtimea)
+    setTimeout(function() {document.getElementsByClassName('a8')[0].style.display = 'block';},nowtimea)
+    setTimeout(function() {document.getElementsByClassName('a9')[0].style.display = 'block';},nowtimea)
+	setTimeout(function() {document.getElementsByClassName('a10')[0].style.display = 'block';},nowtimea)
+
+    }
+
+
+    function donghua6() {
+		  controls.minPolarAngle = Math.PI / 2 - 1.2;
+      controls.maxPolarAngle = Math.PI / 2 + 1;       // 控制酒瓶的旋转角度
+	  controls.maxAzimuthAngle = 4;		//水平角度最右限制
+	  controls.minAzimuthAngle = -4 ;       //水平角度最左限制
+      controls.minDistance = 8;
+      controls.maxDistance = 55;
+	    document.getElementsByClassName('a1')[0].style.display = 'none';
+        document.getElementsByClassName('a2')[0].style.display = 'none';
+        document.getElementsByClassName('a3')[0].style.display = 'none';
+        document.getElementsByClassName('a4')[0].style.display = 'none';
+        document.getElementsByClassName('a5')[0].style.display = 'none';
+        document.getElementsByClassName('a6')[0].style.display = 'none';
+		        document.getElementsByClassName('a7')[0].style.display = 'none';
+        document.getElementsByClassName('a8')[0].style.display = 'none';
+        document.getElementsByClassName('a9')[0].style.display = 'none';
+        document.getElementsByClassName('a10')[0].style.display = 'none';
+        document.getElementsByClassName('a77')[0].style.display = 'block';
+	  document.getElementsByClassName('layer-right')[0].style.display = 'none';
+	  document.getElementsByClassName('layer-righta')[0].style.display = 'none';
+      document.getElementsByClassName('layer-rightb')[0].style.display = 'none';
+      document.getElementsByClassName('layer-rightc')[0].style.display = 'none';
+
+	  Qa.visible = false;
+	  Qb.visible = false;
+	  Qc.visible = false;
+	  Qd.visible = false;
+	  shoeModel.visible = true;
+      //动画5
+      	        if (currentAction) {
+        mixer.stopAllAction();
+      }
+      if (showanimation[1]) {
+        currentAction = mixer.clipAction(showanimation[1]);
+        currentAction.loop = THREE.LoopOnce;
+        currentAction.time = 0;
+        currentAction.clampWhenFinished = true;
+        currentAction.enable = true;
+        currentAction.fadeIn();
+        currentAction.play(); //合体
+      }
+
+
+    }
+
+
+
+    function donghua7() {
+      //动画6
+      <!-- if (currentAction) { -->
+        <!-- mixer.stopAllAction(); -->
+      <!-- } -->
+      <!-- if (showanimation[1]) { -->
+        <!-- currentAction = mixer.clipAction(showanimation[1]); -->
+        <!-- currentAction.loop = THREE.LoopOnce; -->
+
+        <!-- currentAction.clampWhenFinished = true; -->
+
+        <!-- currentAction.fadeIn(); -->
+        <!-- currentAction.play(); //合体 -->
+      <!-- } -->
+
+
+      cube4.visible = false;
+      cube5.visible = false;
+      cube6.visible = false;
+	  cube7.visible = false;
+      cube8.visible = false;
+      cube9.visible = false;
+	  cube10.visible = false;
+      cube.visible = true;
+      cube2.visible = true;
+      cube3.visible = false;
+      <!-- document.getElementsByClassName('a4')[0].style.display = 'none'; -->
+      <!-- document.getElementsByClassName('a5')[0].style.display = 'none'; -->
+      <!-- document.getElementsByClassName('a6')[0].style.display = 'none'; -->
+      <!-- document.getElementsByClassName('a1')[0].style.display = 'block'; -->
+      <!-- document.getElementsByClassName('a2')[0].style.display = 'block'; -->
+      <!-- document.getElementsByClassName('a3')[0].style.display = 'none'; -->
+    }
+
+    function qiea() {
+	  Qa.visible = true;
+	  Qb.visible = false;
+	  Qc.visible = false;
+	  Qd.visible = false;
+	  shoeModel.visible = false;
+	 Qshadow.visible = false;
+    }
+    function qieb() {
+	  Qa.visible = false;
+	  Qb.visible = true;
+	  Qc.visible = false;
+	 Qd.visible = false;
+	  shoeModel.visible = false;
+	  	  Qshadow.visible = false;
+    }
+    function qiec() {
+	  Qa.visible = false;
+	  Qb.visible = false;
+	  Qc.visible = true;
+	Qd.visible = false;
+	  shoeModel.visible = false;
+	  	  Qshadow.visible = false;
+    }
+    function qiemain() {
+	  Qa.visible = false;
+	  Qb.visible = false;
+	  Qc.visible = false;
+	 Qd.visible = false;
+	  shoeModel.visible = true;
+	  	  Qshadow.visible = true;
+    }
+	function qied() {
+	  Qa.visible = false;
+	  Qb.visible = false;
+	  Qc.visible = false;
+	  Qd.visible = true;
+	  shoeModel.visible = false;
+	  Qshadow.visible = false;
+    }
+
+
+
+    function init() {
+      container = document.getElementsByClassName('image_background')[0];
+
+
+      camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.25, 200);
+      camera.position.set(5, 7, 10);
+
+      scene = new THREE.Scene();
+
+      scene.add(group);
+
+      var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 3);
+	  hemiLight.color.setHSL(0,0,1);
+      hemiLight.groundColor.setHSL(0, 0,.6);
+      hemiLight.position.set(0,100,50);
+      scene.add(hemiLight);
+
+
+<!-- var light = new THREE.DirectionalLight(0xffffff, 3); -->
+<!-- light.position.set(0.5,0.5,1); -->
+<!-- scene.add(light);  -->
+
+
+
+//辅助工具
+			var helper = new THREE.AxesHelper(50);
+      //scene.add(helper);
+
+      var material = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.2 });
+
+      //添加球体
+      var geometry = new THREE.SphereBufferGeometry(0.01, 0.01, 0.01);
+      //轮播触发的
+      //添加第一个
+      cube = new THREE.Mesh(geometry, material);
+      cube.position.set(0, 0, 0);
+      cube.name = 'xq1';
+      targetArray.push({ name: cube.name, position: cube.position });
+        console.log('cube');
+        $('#loading .loading-end')[0].style.top='315px';
+        $('#loading .loading-end')[0].style.height='15px';
+      // scene.add(cube);
+
+      //添加第二个
+      cube2 = new THREE.Mesh(geometry, material);
+      cube2.position.set(0, 0, 0);
+      cube2.name = 'xq2';
+      targetArray.push({ name: cube2.name, position: cube2.position });
+        console.log('cube2');
+        $('#loading .loading-end')[0].style.top='280px';
+        $('#loading .loading-end')[0].style.height='35px';
+      // scene.add(cube2);
+
+      //添加第三个
+      cube3 = new THREE.Mesh(geometry, material);
+      cube3.position.set(0, 2, 0);
+      cube3.name = 'xq3';
+      targetArray.push({ name: cube3.name, position: cube3.position });
+        console.log('cube3');
+        $('#loading .loading-end')[0].style.top='260px';
+        $('#loading .loading-end')[0].style.height='55px';
+      // scene.add(cube3);
+
+      //添加第4个
+      cube4 = new THREE.Mesh(geometry, material);
+      cube4.position.set(0, 2, 0.6);
+      cube4.name = 'xq4';
+      targetArray.push({ name: cube4.name, position: cube4.position });
+        console.log('cube4');
+        $('#loading .loading-end')[0].style.top='240px';
+        $('#loading .loading-end')[0].style.height='75px';
+      //scene.add(cube4);
+
+      //添加第5个
+      cube5 = new THREE.Mesh(geometry, material);
+      cube5.position.set(3, 0, -1);
+      cube5.name = 'xq5';
+      targetArray.push({ name: cube5.name, position: cube5.position });
+        console.log('cube5');
+        $('#loading .loading-end')[0].style.top='220px';
+        $('#loading .loading-end')[0].style.height='95px';
+
+      // scene.add(cube5);
+
+      //添加第6个
+      cube6 = new THREE.Mesh(geometry, material);
+      cube6.position.set(0, -1, 2.3);
+      cube6.name = 'xq6';
+      targetArray.push({ name: cube6.name, position: cube6.position });
+        console.log('cube6');
+        $('#loading .loading-end')[0].style.top='200px';
+        $('#loading .loading-end')[0].style.height='115px';
+      // scene.add(cube6);
+
+
+	        //添加第7个
+      cube7 = new THREE.Mesh(geometry, material);
+      cube7.position.set(2.5, -0.3, 0.5);
+      cube7.name = 'xq7';
+      targetArray.push({ name: cube7.name, position: cube7.position });
+        console.log('cube7');
+        $('#loading .loading-end')[0].style.top='180px';
+        $('#loading .loading-end')[0].style.height='135px';
+      // scene.add(cube7);
+
+      //添加第8个
+      cube8 = new THREE.Mesh(geometry, material);
+      cube8.position.set(2.6, -1, 2);
+      cube8.name = 'xq8';
+      targetArray.push({ name: cube8.name, position: cube8.position });
+        console.log('cube8');
+        $('#loading .loading-end')[0].style.top='160px';
+        $('#loading .loading-end')[0].style.height='155px';
+      // scene.add(cube8);
+
+      //添加第9个
+      cube9 = new THREE.Mesh(geometry, material);
+      cube9.position.set(2.6, 0.7, 1.6);
+      cube9.name = 'xq9';
+      targetArray.push({ name: cube9.name, position: cube9.position });
+        $('#loading .loading-end')[0].style.top='140px';
+        $('#loading .loading-end')[0].style.height='175px';
+        console.log('cube9');
+      // scene.add(cube9);
+
+      //添加第10个
+      cube10 = new THREE.Mesh(geometry, material);
+      cube10.position.set(-6, 0, 0);
+      cube10.name = 'xq10';
+      targetArray.push({ name: cube10.name, position: cube10.position });
+        console.log('cube10');
+        $('#loading .loading-end')[0].style.top='120px';
+        $('#loading .loading-end')[0].style.height='195px';
+      // scene.add(cube10);
+
+
+
+            // < !--scene.add(cube4); -->
+        //无触发的，子系统的
+        //添加第一个
+        cubea1 = new THREE.Mesh(geometry, material);
+      cubea1.position.set(-1, -1, 2.5);
+      cubea1.name = 'xqa1';
+      targetArray.push({ name: cubea1.name, position: cubea1.position });
+        $('#loading .loading-end')[0].style.top='100px';
+        $('#loading .loading-end')[0].style.height='215px';
+      // scene.add(cubea1);
+
+      //添加第二个
+      cubea2 = new THREE.Mesh(geometry, material);
+      cubea2.position.set(0, 3, -1);
+      cubea2.name = 'xqa2';
+      targetArray.push({ name: cubea2.name, position: cubea2.position });
+        $('#loading .loading-end')[0].style.top='80px';
+        $('#loading .loading-end')[0].style.height='235px';
+      scene.add(cubea2);
+
+      //添加第三个
+      cubea3 = new THREE.Mesh(geometry, material);
+      cubea3.position.set(0, 2, 0.5);
+      cubea3.name = 'xqa3';
+      targetArray.push({ name: cubea3.name, position: cubea3.position });
+        $('#loading .loading-end')[0].style.top='60px';
+        $('#loading .loading-end')[0].style.height='255px';
+      // scene.add(cubea3);
+	  //添加第四个
+      cubea4 = new THREE.Mesh(geometry, material);
+      cubea4.position.set(3, 0.3, -1.5);
+      cubea4.name = 'xqa4';
+      targetArray.push({ name: cubea4.name, position: cubea4.position });
+        $('#loading .loading-end')[0].style.top='40px';
+        $('#loading .loading-end')[0].style.height='275px';
+      // scene.add(cubea4);
+
+      //添加第五个
+      cubea5 = new THREE.Mesh(geometry, material);
+      cubea5.position.set(-3, 0.5, 1);
+      cubea5.name = 'xqa5';
+      targetArray.push({ name: cubea5.name, position: cubea5.position });
+        $('#loading .loading-end')[0].style.top='20px';
+        $('#loading .loading-end')[0].style.height='295px';
+      // scene.add(cubea5);
+
+      //添加第六个
+      cubea6 = new THREE.Mesh(geometry, material);
+      cubea6.position.set(0, 0, 0);
+      cubea6.name = 'xqa6';
+      targetArray.push({ name: cubea6.name, position: cubea6.position });
+        $('#loading .loading-end')[0].style.top='0px';
+        $('#loading .loading-end')[0].style.height='315px';
+      // scene.add(cubea6);
+
+      console.log(targetArray);
+        //
+        // if($('#loading .loading-end')[0]){
+        //     $('#loading .loading-end')[0].style.top=315-315*(progress1 + progress2 + progress3 + progress4 + progress5 + progress6)+'px';
+        //     $('#loading .loading-end')[0].style.height=315*(progress1 + progress2 + progress3 + progress4 + progress5 + progress6)+'px';
+        //     if(scene.children.length ==24){
+        //         console.log(scene);
+        //         $('#loading').fadeOut(2000);
+        //     }
+        // }
+
+
+      //反射环境
+      var path = 'textures/cube/Bridge2/';
+      var format = '.jpg';
+      var envMap = new THREE.CubeTextureLoader().load([
+        path + 'posx' + format, path + 'negx' + format,
+        path + 'posy' + format, path + 'negy' + format,
+        path + 'posz' + format, path + 'negz' + format
+				]);
+
+
+      //显示背景
+
+      var patha = 'textures/cube/Bridge2/';
+      var formata = '.jpg';
+      var backtex = new THREE.CubeTextureLoader().load([
+        patha + 'house.right' + formata,
+        patha + 'house.left' + formata,
+        patha + 'house.top' + formata,
+        patha + 'house.bottom' + formata,
+        patha + 'house.front' + formata,
+        patha + 'house.back' + formata
+      ]);
+      scene.background = backtex;
+      scene.add(group);
+
+
+	  <!-- 重复贴图 -->
+			var repeatmap= new  THREE.TextureLoader().load('files/downloadaa.jpg');
+			 repeatmap.wrapS = THREE.RepeatWrapping;
+             repeatmap.wrapT = THREE.RepeatWrapping;
+             repeatmap.repeat.set( 38,38 );
+var meshMaterial = new THREE.MeshStandardMaterial;
+
+        var manager = new THREE.LoadingManager();
+        manager.onProgress1 = function ( item, loaded, total ) {
+            console.log( item, loaded, total );
+        };
+        manager.onProgress2 = function ( item, loaded, total ) {
+            console.log( item, loaded, total );
+        };
+        manager.onProgress3 = function ( item, loaded, total ) {
+            console.log( item, loaded, total );
+        };
+        manager.onProgress4 = function ( item, loaded, total ) {
+            console.log( item, loaded, total );
+        };
+        manager.onProgress5 = function ( item, loaded, total ) {
+            console.log( item, loaded, total );
+        };
+        manager.onProgress6 = function ( item, loaded, total ) {
+            console.log( item, loaded, total );
+        };
+
+        function onProgress1( xhr ) {
+            if ( xhr.lengthComputable ) {
+                var percentComplete = xhr.loaded / xhr.total;
+                progress1 = percentComplete / 6;
+                console.log(progress1);
+            }
+        }
+        function onProgress2( xhr ) {
+            if ( xhr.lengthComputable ) {
+                var percentComplete = xhr.loaded / xhr.total;
+                progress2 = percentComplete / 6;
+            }
+        }
+        function onProgress3( xhr ) {
+            if ( xhr.lengthComputable ) {
+                var percentComplete = xhr.loaded / xhr.total;
+                progress3 = percentComplete / 6;
+            }
+        }
+        function onProgress4( xhr ) {
+            if ( xhr.lengthComputable ) {
+                var percentComplete = xhr.loaded / xhr.total;
+                progress4 = percentComplete / 6;
+            }
+        }
+        function onProgress5( xhr ) {
+            if ( xhr.lengthComputable ) {
+                var percentComplete = xhr.loaded / xhr.total;
+                progress5 = percentComplete / 6;
+            }
+        }
+        function onProgress6( xhr ) {
+            if ( xhr.lengthComputable ) {
+                var percentComplete = xhr.loaded / xhr.total;
+                progress6 = percentComplete / 6;
+            }
+        }
+
+        function onError() {}
+
+      var loader = new THREE.GLTFLoader(manager);
+      loader.load('http://qiniucdn.happyppt.com/0606/b/b.gltf',
+        function (gltf) {
+          gltf.scene.scale.set(.5, .5, .5);
+          gltf.scene.position.y -= 2.8;
+          gltf.scene.traverse(function (child) {
+            if (child.isMesh) {
+              child.material.side = THREE.DoubleSide;
+              child.material.envMap = envMap;
+			  //child.material.normalMap = repeatmap;
+            }
+          });
+		  var animations = gltf.animations;
+                    if (animations && animations.length) {
+                        mixer = new THREE.AnimationMixer(gltf.scene);
+                        for (var i = 0; i < animations.length; i++) {
+                            showanimation.push(animations[i]);
+                        }
+                    }
+          shoeModel = gltf.scene;
+          scene.add(gltf.scene);
+          console.log(gltf.scene);
+        },onProgress1,onError);
+
+
+	var loadera = new THREE.GLTFLoader(manager);
+        loader.load('http://qiniucdn.happyppt.com/0606/b/ba.gltf',
+        function (gltfa) {
+          gltfa.scene.scale.set(.5, .5, .5);
+          gltfa.scene.position.y -= 2.8;
+          gltfa.scene.traverse(function (child) {
+            if (child.isMesh) {
+              child.material.side = THREE.DoubleSide;
+              child.material.envMap = envMap;
+			  //child.material.normalMap = repeatmap;
+            }
+          });
+          scene.add(gltfa.scene);
+		  Qa = gltfa.scene;
+		  Qa.visible = false;
+        },onProgress2,onError);
+
+	var loaderb = new THREE.GLTFLoader(manager);
+        loader.load('http://qiniucdn.happyppt.com/0606/b/bb.gltf',
+        function (gltfb) {
+          gltfb.scene.scale.set(.5, .5, .5);
+          gltfb.scene.position.y -= 2.8;
+          gltfb.scene.traverse(function (child) {
+            if (child.isMesh) {
+              child.material.side = THREE.DoubleSide;
+              child.material.envMap = envMap;
+			  //child.material.normalMap = repeatmap;
+            }
+          });
+          scene.add(gltfb.scene);
+		  Qb = gltfb.scene;
+		  Qb.visible = false;
+        },
+          onProgress3,onError);
+
+
+	var loaderc = new THREE.GLTFLoader(manager);
+        loader.load('http://qiniucdn.happyppt.com/0606/b/bc.gltf',
+        function (gltfc) {
+          gltfc.scene.scale.set(.5, .5, .5);
+          gltfc.scene.position.y -= 2.8;
+          gltfc.scene.traverse(function (child) {
+            if (child.isMesh) {
+              child.material.side = THREE.DoubleSide;
+              child.material.envMap = envMap;
+			  //child.material.normalMap = repeatmap;
+            }
+          });
+          scene.add(gltfc.scene);
+		  Qc = gltfc.scene;
+		  Qc.visible = false;
+        },
+          onProgress4,onError);
+	var loaderd = new THREE.GLTFLoader(manager);
+        loader.load('http://qiniucdn.happyppt.com/0606/b/bd.gltf',
+        function (gltfd) {
+          gltfd.scene.scale.set(.5, .5, .5);
+          gltfd.scene.position.y -= 2.8;
+          gltfd.scene.traverse(function (child) {
+            if (child.isMesh) {
+              child.material.side = THREE.DoubleSide;
+              child.material.envMap = envMap;
+			  //child.material.normalMap = repeatmap;
+            }
+          });
+          scene.add(gltfd.scene);
+		  Qd = gltfd.scene;
+		  Qd.visible = false;
+        },
+          onProgress5,onError);
+
+
+	var loadershadow = new THREE.GLTFLoader(manager);
+        loader.load('http://qiniucdn.happyppt.com/0606/b/bshadow.gltf',
+        function (gltfshadowa) {
+          gltfshadowa.scene.scale.set(.5, .5, .5);
+          gltfshadowa.scene.position.y -= 2.8;
+          gltfshadowa.scene.traverse(function (child) {
+            if (child.isMesh) {
+              child.material.side = THREE.DoubleSide;
+              child.material.envMap = envMap;
+			  //child.material.normalMap = repeatmap;
+            }
+          });
+          scene.add(gltfshadowa.scene);
+		  Qshadow = gltfshadowa.scene;
+		  Qshadow.visible = true;
+        },
+          onProgress6,onError);
+
+
+
+        renderer = new THREE.WebGLRenderer({
+          antialias: true, alpha: true
+        });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x4f6c97, 1.0);
+      renderer.gammaOutput = true;
+	  <!-- renderer.gammaFactor = 4.2; -->
+      container.appendChild(renderer.domElement);
+      controls = new THREE.OrbitControls(
+        camera,
+        renderer.domElement
+      );
+      controls.enablePan = false;
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.1;
+      controls.enableZoom = true;
+      controls.target.set(-0.00001, 0, 0);
+      controls.autoRotateSpeed = -0.036;             //自动旋转速度
+      controls.autoRotate = false;                //控制是否自动旋转
+
+
+	 controls.minPolarAngle = Math.PI / 2;       // 垂直最下角度限制
+      controls.maxPolarAngle = Math.PI / 2;       // 垂直最下角度限制
+	  controls.maxAzimuthAngle = 1;		//水平角度最右限制
+	  controls.minAzimuthAngle = -1;       //水平角度最左限制
+      controls.minDistance = 25;
+      controls.maxDistance = 25;
+
+      window.addEventListener('resize', onWindowResize, false);
+      // stats
+
+
+	  stats = new Stats();
+		<!-- container.appendChild( stats.dom ); -->
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function onDocumentMouseMove(event) {
+      event.preventDefault();
+      console.log(event);
+    }
+
+    function onDocumentMouseStart(event) {
+      event.preventDefault();
+      console.log(event);
+    }
+
+    function onDocumentMouseEnd(event) {
+      event.preventDefault();
+      console.log(event);
+    }
+
+
+
+    //初始化dat.GUI简化试验流程
+    function initGui() {
+      //声明一个保存需求修改的相关数据的对象
+      gui = {
+      };
+      //var datGui = new dat.GUI();
+      //将设置属性添加到gui当中，gui.add(对象，属性，最小值，最大值）
+    }
+
+
+
+
+
+    function initControls() {
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.addEventListener('change', render);
+      controls.maxPolarAngle = Math.PI / 2;       // 控制酒瓶的旋转角度
+    }
+
+
+    //每帧额外的运算
+    function render() {
+      renderer.render(scene, camera);
+      //获取到窗口的一半高度和一半宽度
+      let halfWidth = window.innerWidth / 2;
+      let halfHeight = window.innerHeight / 2;
+
+      var vector1 = cube.position.clone().project(camera);
+      var vector2 = cube2.position.clone().project(camera);
+      var vector3 = cube3.position.clone().project(camera);
+      var vector4 = cube4.position.clone().project(camera);
+      var vector5 = cube5.position.clone().project(camera);
+      var vector6 = cube6.position.clone().project(camera);
+	  var vector7 = cube7.position.clone().project(camera);
+      var vector8 = cube8.position.clone().project(camera);
+      var vector9 = cube9.position.clone().project(camera);
+      var vector10 = cube10.position.clone().project(camera);
+
+      var vectora1 = cubea1.position.clone().project(camera);
+      var vectora2 = cubea2.position.clone().project(camera);
+      var vectora3 = cubea3.position.clone().project(camera);
+	  var vectora4 = cubea4.position.clone().project(camera);
+      var vectora5 = cubea5.position.clone().project(camera);
+      var vectora6 = cubea6.position.clone().project(camera);
+
+      //修改第一个的div的位置
+      $(".one").css({
+        left: vector1.x * halfWidth + halfWidth,
+        top: -vector1.y * halfHeight + halfHeight
+      });
+
+
+      $(".two").css({
+        left: vector2.x * halfWidth + halfWidth,
+        top: -vector2.y * halfHeight + halfHeight
+      });
+
+
+      $(".three").css({
+        left: vector3.x * halfWidth + halfWidth,
+        top: -vector3.y * halfHeight + halfHeight
+      });
+      $(".four").css({
+        left: vector4.x * halfWidth + halfWidth,
+        top: -vector4.y * halfHeight + halfHeight
+      });
+      $(".five").css({
+        left: vector5.x * halfWidth + halfWidth,
+        top: -vector5.y * halfHeight + halfHeight
+      });
+      $(".six").css({
+        left: vector6.x * halfWidth + halfWidth,
+        top: -vector6.y * halfHeight + halfHeight
+      });
+
+
+
+      $(".a1").css({
+        left: vectora1.x * halfWidth + halfWidth,
+        top: -vectora1.y * halfHeight + halfHeight
+      });
+      $(".a2").css({
+        left: vectora2.x * halfWidth + halfWidth,
+        top: -vectora2.y * halfHeight + halfHeight
+      });
+      $(".a3").css({
+        left: vectora3.x * halfWidth + halfWidth,
+        top: -vectora3.y * halfHeight + halfHeight
+      });
+
+
+	        $(".a4").css({
+        left: vector4.x * halfWidth + halfWidth,
+        top: -vector4.y * halfHeight + halfHeight
+      });
+      $(".a5").css({
+        left: vector5.x * halfWidth + halfWidth,
+        top: -vector5.y * halfHeight + halfHeight
+      });
+      $(".a6").css({
+        left: vector6.x * halfWidth + halfWidth,
+        top: -vector6.y * halfHeight + halfHeight
+      });
+	  	        $(".a7").css({
+        left: vector7.x * halfWidth + halfWidth,
+        top: -vector7.y * halfHeight + halfHeight
+      });
+      $(".a8").css({
+        left: vector8.x * halfWidth + halfWidth,
+        top: -vector8.y * halfHeight + halfHeight
+      });
+      $(".a9").css({
+        left: vector9.x * halfWidth + halfWidth,
+        top: -vector9.y * halfHeight + halfHeight
+      });
+      $(".a10").css({
+        left: vector10.x * halfWidth + halfWidth,
+        top: -vector10.y * halfHeight + halfHeight
+      });
+    }
+
+    //窗口变动触发的函数
+    function onWindowResize() {
+
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      render();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+    }
+
+
+
+    function draw() {
+      //兼容性判断
+      if (!Detector.webgl) Detector.addGetWebGLMessage();
+      initGui();
+      initRender();
+      initScene();
+      //initScene_2();
+      fbxLoader();
+      initCamera();
+      initLight();
+      initModel();
+      initControls();
+      initStats();
+      animate();
+      window.onresize = onWindowResize;
+    }
+
+
+    //
+    var time = 0;
+
+    function animate() {
+        console.log(scene);
+stats.update();
+
+      //每帧额外的运算
+      render();
+      //更新性能插件
+      requestAnimationFrame(animate);
+      TWEEN.update();
+      controls.update();
+      renderer.render(scene, camera);
+
+      if (mixer) mixer.update(clock.getDelta());
+
+      if (shoeModel && startMove) {
+        time += 1;
+        shoeModel.traverse(function (child) {
+          if (child.type == 'Mesh') {
+            child.material.opacity -= opacity * opcityDir;
+            child.material.transparent = true;
+
+            if (child.material.opacity < 0.4 || child.material.opacity == 1) {
+              startMove = false;
+              time = 0;
+            }
+          }
+        })
+        if (time > 230) {
+          var action = mixer.clipAction(showanimation[0]);
+          action.loop = THREE.LoopOnce;
+          action.time = 0;
+          action.clampWhenFinished = true;
+          action.enable = true;
+          action.play();
+
+        }
+
+        if (mixers.length > 0) {
+          for (var i = 0; i < mixers.length; i++) {
+
+            mixers[i].update(clock.getDelta());
+
+          }
+
+        }
+        // requestAnimationFrame(animate);
+        if (modelShow && modelShow.children.length > 0 && !initPosition) {
+          camera.position.set(0, cameraResetPositionY, cameraResetPosition);
+          console.log('enter');
+          initPosition = true;
+        }
+
+
+
+      }
+            // 相机移动方式
+
+        }
+    $(function () {
+      function image_top_change(type) {
+        var idx = $('.tips.active').index() - 1;
+        var len = $('.tips').length;
+        var image_top_url = ["./textures/top/RDB5-63/a.png","./textures/top/RDB5-63/b.png","./textures/top/RDB5-63/c.png","./textures/top/RDB5-63/d.png","./textures/top/RDB5-63/a.png"];
+        if(type === 'shang') {
+          if(idx === 0) {
+            idx = len - 1;
+          }else {
+            idx--;
+          }
+        }else {
+          if(idx === len - 1) {
+            idx = 0;
+          }else {
+            idx++;
+          }
+        }
+        $('#image_top').css({
+          "background-image": `url(${image_top_url[idx]})`
+        })
+      }
+      // var bb = new Date().getTime();
+        var star = new Date().getTime();
+      $('.shang').on('click', function () {
+          var end = new Date().getTime();
+          var hear = new Date(end-star).getTime();
+          console.log(hear)
+          if(hear<500){
+              nowtime = 200
+          }else {
+              nowtime = 1000
+          }
+        star = new Date().getTime();
+        var dqindex = vm.selectindex;
+
+        //上翻页
+        cameraMoveBackState();
+        image_top_change('shang');
+          isdonghua9 = $('.tips.active').index() === 5;
+		  isdonghua10 = $('.tips.active').index() === 3;
+        if ($('.tips.active').index() - 1 === 0) {
+          $('.tips').removeClass('active');
+          $($('.tips')[$('.tips').length - 1])
+            .addClass('active')
+            .click();
+        } else {
+          $($('.tips')[$('.tips.active').index() - 2])
+            .addClass('active')
+            .click()
+            .siblings()
+            .removeClass('active');
+          vm.selectindex = dqindex - 1;
+        }
+      });
+      var nextTime = new Date().getTime()
+      $('.xia').on('click', function () {
+        var nowdate = new Date().getTime();
+        var a = new Date(nowdate-nextTime).getTime()
+        console.log(a)
+        if(a<500){
+          nowtime = 200,
+		  nowtimea = 0
+        }else{
+          nowtime = 1000,
+		  nowtimea = 1000
+        }
+        cameraMoveState();
+        image_top_change('xia');
+        var dqindex = vm.selectindex;
+        nextTime = new Date().getTime()
+
+        //下翻页
+        if ($('.tips.active').index() == $('.tips').length) {
+          $('.tips').removeClass('active');
+          $($('.tips')[0])
+            .addClass('active')
+            .click();
+          vm.selectindex = 1;
+        } else {
+          $($('.tips')[$('.tips.active').index()])
+            .addClass('active')
+            .click()
+            .siblings()
+            .removeClass('active');
+          vm.selectindex = dqindex + 1;
+        }
+      });
+
+      $('.tips').on('click', function () {
+        //单独点击
+        $('.tips').removeClass('active');
+        $(this).addClass('active');
+      });
+    });
+
+
+
+    function loadJs(url, callback) {
+      var script = document.createElement('script');
+      script.type = "text/javascript";
+      if (typeof (callback) != "undefined") {
+        if (script.readyState) {
+          script.onreadystatechange = function () {
+            if (script.readyState == "loaded" || script.readyState == "complete") {
+              script.onreadystatechange = null;
+              callback();
+            }
+          }
+        } else {
+          script.onload = function () {
+            callback();
+          }
+        }
+      }
+      script.src = url;
+      document.body.appendChild(script);
+    }
+  </script>
+</body>
+
+</html>

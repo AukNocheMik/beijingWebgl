@@ -1,0 +1,64 @@
+#loading {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: #fff;
+    z-index: 9999999;
+}
+.loading-logo {
+    width: 645px;
+    height: 80px;
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%);
+    background: url("../img/logo.png") no-repeat center;
+    background-size: cover;
+}
+.loading-box {
+    width: 315px;
+    height: 315px;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%,-50%);
+}
+#loading .loading-start {
+    width: 315px;
+    height: 315px;
+    background: url("../img/start.png") no-repeat center;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+#loading .loading-end {
+    width: 315px;
+    height: 0;
+    position: absolute;
+    left: 0;
+    top: 315px;
+    background: url("../img/end.png") no-repeat bottom;
+    background-size: cover;
+}
+
+
+
+
+@media screen and (max-width: 480px){
+	
+	.loading-logo {
+    width: 300px;
+    height: 37px;
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%);
+    background: url("../img/logoa.png") no-repeat center;
+    background-size: cover;
+}
+	
+	
+	
+	
+}

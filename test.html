@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>大尾巴狼的需求</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+</head>
+
+<body>
+ 
+
+
+<script>
+var newTime = new Date();
+$('body').on('click', '#UpData', function () {
+    if (new Date() > newTime.setMinutes(newTime.getMinutes() + 1)) {
+        setTime(data.Time, 'Me',false)
+    }
+    newTime = new Date()
+ })
+</script>
+</body>
+</html>

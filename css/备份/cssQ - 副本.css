@@ -1,0 +1,317 @@
+body {
+  text-align: center;
+  position: relative;
+  font-family: Monospace;
+  background-color: #000;
+  color: #fff;
+  margin: 0px;
+  overflow: hidden;
+}
+
+#info {
+  color: #fff;
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  text-align: center;
+  z-index: 100;
+  display: block;
+}
+
+#info a {
+  color: #75ddc1;
+  font-weight: bold;
+}
+
+.resetBtn {
+  position: absolute;
+  z-index: 1;
+  top: 30px;
+  right: 180px;
+  width: 100px;
+  height: 30px;
+  background-color: #555555;
+  color: white;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.addBtn {
+  position: absolute;
+  z-index: 1;
+  top: 30px;
+  right: 50px;
+  width: 100px;
+  height: 30px;
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.image_top {
+  position: absolute;
+  z-index: 1;
+  width: 82%;
+  height: 13%;
+  background-image: url('../files/bg6.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.image_bottom {
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+}
+
+.image_bottom button img {
+  width: 100px;
+  height: 60px;
+}
+
+/*canvas {*/
+/*position:absolute;*/
+/*}*/
+.btn_box {
+  /* width: 350px; */
+  /*z-index: 9999;*/
+  /*position: absolute;*/
+  /*display: flex;*/
+  /*justify-content: space-around;*/
+  /*align-items: center;*/
+  line-height: 50px;
+  position: relative;
+}
+
+.btn_box * {
+  box-sizing: border-box;
+}
+.pages span {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  /* margin-top:-16vw; */
+  background: url(../img/diana.png) no-repeat center top;
+  background-size: 100%;
+}
+
+.pages span.active {
+  /* margin-top:-16vw; */
+  background: url(../img/dian.png) no-repeat center top;
+  background-size: 100%;
+}
+
+.shang{
+  /* margin-top:-16vw; */
+  width: 50px;
+  height: 50px;
+  background: url(../img/zuoa.png) no-repeat center top;
+  background-size: 100%;
+  position: absolute;
+  left: 0;
+}
+
+.xia {
+  /* margin-top:-16vw; */
+  width: 50px;
+  height: 50px;
+  background: url(../img/youa.png) no-repeat center top;
+  background-size: 100%;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.xan {
+  position: fixed;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  bottom: 3%;
+  width: 380px;
+  height: 180px;
+  background: url(../files/bg.png) no-repeat center top;
+  background-size: 75%;
+  pointer-events: none;
+}
+
+.xan span {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.xan .active {
+  margin-top: 0px;
+}
+
+/* 第1套右侧框 */
+.layer-right {
+  position: fixed;
+  right: 70%;  /*右边浮层距离浏览器右边的距离*/
+  top: 80%;  /*右边浮层距离浏览器上边的距离*/
+}
+.layer-right .layer-button {
+  width: 54px;
+  height: 60px;
+  margin-bottom: 30px; /*右边浮层按钮上下的间距*/
+  border-radius: 5px; /*右边浮层按钮的圆弧大小 越大越圆*/
+}
+.layer-right .layer-button:first-child {
+  background: url('../textures/a.png') no-repeat center;
+}
+
+/*高亮效果*/
+.layer-right .layer-button:first-child.layer-button-active {
+  background: url('../textures/aa.png') no-repeat center;
+}
+
+/* 第2套右侧框 */
+.layer-righta {
+  position: fixed;
+  right: 50%;  /*右边浮层距离浏览器右边的距离*/
+  top: 80%;  /*右边浮层距离浏览器上边的距离*/
+}
+.layer-righta .layer-button {
+  width: 54px;
+  height: 62px;
+  margin-bottom: 30px; /*右边浮层按钮上下的间距*/
+  border-radius: 5px; /*右边浮层按钮的圆弧大小 越大越圆*/
+}
+.layer-righta .layer-button:first-child {
+  background: url('../textures/b.png') no-repeat center;
+}
+
+/*高亮效果*/
+.layer-righta .layer-button:first-child.layer-button-active {
+  background: url('../textures/bb.png') no-repeat center;
+}
+/* 第3套右侧框 */
+.layer-rightb {
+  position: fixed;
+  right:30%;  /*右边浮层距离浏览器右边的距离*/
+  top: 80%;  /*右边浮层距离浏览器上边的距离*/
+}
+.layer-rightb .layer-button {
+  width: 54px;
+  height: 62px;
+  margin-bottom: 30px; /*右边浮层按钮上下的间距*/
+  border-radius: 5px; /*右边浮层按钮的圆弧大小 越大越圆*/
+}
+.layer-rightb .layer-button:first-child {
+  background: url('../textures/c.png') no-repeat center;
+}
+
+/*高亮效果*/
+.layer-rightb .layer-button:first-child.layer-button-active {
+  background: url('../textures/cc.png') no-repeat center;
+}
+
+/* 第4套右侧框 */
+.layer-rightc {
+  position: fixed;
+  right: 10%;  /*右边浮层距离浏览器右边的距离*/
+  top: 80%;  /*右边浮层距离浏览器上边的距离*/
+}
+.layer-rightc .layer-button {
+  width: 54px;
+  height: 62px;
+  margin-bottom: 30px; /*右边浮层按钮上下的间距*/
+  border-radius: 5px; /*右边浮层按钮的圆弧大小 越大越圆*/
+}
+.layer-rightc .layer-button:first-child {
+  background: url('../textures/d.png') no-repeat center;
+}
+
+/*高亮效果*/
+.layer-rightc .layer-button:first-child.layer-button-active {
+  background: url('../textures/dd.png') no-repeat center;
+}
+
+
+.self-dian {
+  width: 25%;
+  height: 29px;
+  float: left;
+}
+.self-dian  img {
+  width: 100%;
+  height: 100%;
+}
+
+.self-box {
+  width: 70%;
+  height: 28px;
+  overflow: hidden;
+  float: left;
+}
+.self-right {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.self-right img {
+  width: 100%;
+  height: 100%;
+}
+
+
+@media screen and (min-width: 480px){
+	  .self-right span {
+   font-size: 13px;
+  }
+  .image_top {
+    width: 90%;
+    height: 200px;
+   }
+   .btn_box  {
+    margin: 0 50px;
+   }
+   .xan {
+    width: 512px;
+    height: 256px;
+    background: url(../files/bg.png) no-repeat center;
+    background-size: contain;
+   }
+   
+   
+   
+   	.layer-right .layer-button  {
+
+  margin-bottom: 0px; /*右边浮层按钮上下的间距*/
+
+}
+	.layer-right {
+  position: fixed;
+  right: 55%;  /*右边浮层距离浏览器右边的距离*/
+  top: 80%;  /*右边浮层距离浏览器上边的距离*/
+}
+	.layer-righta {
+  position: fixed;
+  right: 48%;  /*右边浮层距离浏览器右边的距离*/
+  top: 80%;  /*右边浮层距离浏览器上边的距离*/
+}
+	.layer-rightb {
+  position: fixed;
+  right: 41%;  /*右边浮层距离浏览器右边的距离*/
+  top: 80%;  /*右边浮层距离浏览器上边的距离*/
+}
+	.layer-rightc {
+  position: fixed;
+  right: 34%;  /*右边浮层距离浏览器右边的距离*/
+  top: 80%;  /*右边浮层距离浏览器上边的距离*/
+}
+
+ }
