@@ -1473,7 +1473,7 @@ function donghua10(){
         console.log('cube');
         $('#loading .loading-end')[0].style.top='315px';
         $('#loading .loading-end')[0].style.height='15px';
-      // scene.add(cube);
+      // scene.add(cube);   // 所有的cube都可以不用添加，6-17 修改
 
       //添加第二个
       cube2 = new THREE.Mesh(geometry, material);
@@ -1636,14 +1636,14 @@ function donghua10(){
         // }
 
 
-      //反射环境
-      var path = 'textures/cube/Bridge2/';
-      var format = '.jpg';
-      var envMap = new THREE.CubeTextureLoader().load([
-        path + 'posx' + format, path + 'negx' + format,
-        path + 'posy' + format, path + 'negy' + format,
-        path + 'posz' + format, path + 'negz' + format
-				]);
+      // //反射环境
+      // var path = 'textures/cube/Bridge2/';
+      // var format = '.jpg';
+      // var envMap = new THREE.CubeTextureLoader().load([
+      //   path + 'posx' + format, path + 'negx' + format,
+      //   path + 'posy' + format, path + 'negy' + format,
+      //   path + 'posz' + format, path + 'negz' + format
+		// 		]);
 
 
       //显示背景
@@ -1737,7 +1737,7 @@ var meshMaterial = new THREE.MeshStandardMaterial;
           gltf.scene.traverse(function (child) {
             if (child.isMesh) {
               child.material.side = THREE.DoubleSide;
-              child.material.envMap = envMap;
+              // child.material.envMap = envMap;
 			  //child.material.normalMap = repeatmap;
             }
           });
@@ -1762,7 +1762,7 @@ var meshMaterial = new THREE.MeshStandardMaterial;
           gltfa.scene.traverse(function (child) {
             if (child.isMesh) {
               child.material.side = THREE.DoubleSide;
-              child.material.envMap = envMap;
+             // child.material.envMap = envMap;
 			  //child.material.normalMap = repeatmap;
             }
           });
@@ -1779,7 +1779,7 @@ var meshMaterial = new THREE.MeshStandardMaterial;
           gltfb.scene.traverse(function (child) {
             if (child.isMesh) {
               child.material.side = THREE.DoubleSide;
-              child.material.envMap = envMap;
+              // child.material.envMap = envMap;
 			  //child.material.normalMap = repeatmap;
             }
           });
@@ -1815,7 +1815,7 @@ var meshMaterial = new THREE.MeshStandardMaterial;
           gltfd.scene.traverse(function (child) {
             if (child.isMesh) {
               child.material.side = THREE.DoubleSide;
-              child.material.envMap = envMap;
+             // child.material.envMap = envMap;
 			  //child.material.normalMap = repeatmap;
             }
           });
@@ -1834,7 +1834,7 @@ var meshMaterial = new THREE.MeshStandardMaterial;
           gltfshadowa.scene.traverse(function (child) {
             if (child.isMesh) {
               child.material.side = THREE.DoubleSide;
-              child.material.envMap = envMap;
+             // child.material.envMap = envMap;
 			  //child.material.normalMap = repeatmap;
             }
           });
